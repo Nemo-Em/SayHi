@@ -1,0 +1,5 @@
+say_hi:
+    resource: "@SayHiBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
