@@ -1,0 +1,78 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}SayHiBundle:User:modify{% endblock %}
+
+{% block body %}
+    <h2>Modify User</h2>
+    {{ form_start(userForm) }}
+        <div>
+            {{ form_label(userForm.name) }}<br>
+            {{ form_widget(userForm.name) }}
+        </div>
+        <div>
+            {{ form_label(userForm.surname) }}<br>
+            {{ form_widget(userForm.surname) }}
+        </div>
+        <div>
+            {{ form_label(userForm.description) }}<br>
+            {{ form_widget(userForm.description) }}
+        </div>
+        <div>
+            {{ form_widget(userForm.save, { 'attr': {'class': 'btn btn-default'} }) }}
+        </div>
+    {{ form_end(userForm) }}
+    <hr>
+    <h2>Add address</h2>
+    {{ form_start(addressForm) }}
+        <div>
+            {{ form_label(addressForm.city) }}<br>
+            {{ form_widget(addressForm.city) }}
+        </div>
+        <div>
+            {{ form_label(addressForm.street) }}<br>
+            {{ form_widget(addressForm.street) }}
+        </div>
+        <div>
+            {{ form_label(addressForm.streetNr) }}<br>
+            {{ form_widget(addressForm.streetNr) }}
+        </div>
+        <div>
+            {{ form_label(addressForm.aptNr) }}<br>
+            {{ form_widget(addressForm.aptNr) }}
+        </div>
+        <div>
+            {{ form_widget(addressForm.save, { 'attr': {'class': 'btn btn-default'} }) }}
+        </div>
+    {{ form_end(addressForm) }}
+    <hr>
+    <h2>Add email</h2>
+    {{ form_start(emailForm) }}
+        <div>
+            {{ form_label(emailForm.contactType) }}<br>
+            {{ form_widget(emailForm.contactType) }}
+        </div>
+        <div>
+            {{ form_label(emailForm.emailAddress) }}<br>
+            {{ form_widget(emailForm.emailAddress) }}
+        </div>
+        <div>
+            {{ form_widget(emailForm.save, { 'attr': {'class': 'btn btn-default'} }) }}
+        </div>
+    {{ form_end(emailForm) }}    
+    <hr>
+    <h2>Add phone number</h2>
+    {{ form_start(phoneForm) }}
+        <div>
+            {{ form_label(phoneForm.contactType) }}<br>
+            {{ form_widget(phoneForm.contactType) }}
+        </div>
+        <div>
+            {{ form_label(phoneForm.number) }}<br>
+            {{ form_widget(phoneForm.number) }}
+        </div>
+        <div>
+            {{ form_widget(phoneForm.save, { 'attr': {'class': 'btn btn-default'} }) }}
+        </div>
+    {{ form_end(phoneForm) }}
+    <hr>
+{% endblock %}

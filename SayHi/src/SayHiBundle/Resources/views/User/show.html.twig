@@ -1,0 +1,28 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}ShowUser -SayHi{% endblock %}
+{% block body %}    
+    <div class='container-fluid bg-1'>
+        <h1>{{user.name}} {{user.surname}}</h1><a class ="btn btn-default" href="{{ path('modify', {'id': user.id}) }}">Change Details</a>
+        <hr>
+        <span>{{user.description}}</span><br>
+        <hr>
+    </div>
+    <div class="container-fluid bg-2"
+        <hr>
+        <h2>Phone(s)</h2>
+        <hr>
+        {%for phone in phones %}
+            <span>{{phone.number}} ({{phone.contactType.description}})</span><br>
+        {%endfor%}
+    </div>
+    <div class ='container-fluid bg-2'
+        <hr>
+        <h2>Email(s)</h2>
+        <hr>
+        {%for email in emails %}
+            <span>{{email.emailAddress}} ({{email.contactType.description}})</span><br>
+        {%endfor%}
+        <hr>
+    </div>
+{% endblock %}

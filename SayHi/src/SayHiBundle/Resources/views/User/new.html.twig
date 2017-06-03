@@ -1,0 +1,23 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}SayHiBundle:User:new{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.name) }}<br>
+            {{ form_widget(form.name) }}
+        </div>
+        <div>
+            {{ form_label(form.surname) }}<br>
+            {{ form_widget(form.surname) }}
+        </div>
+        <div>
+            {{ form_label(form.description) }}<br>
+            {{ form_widget(form.description) }}
+        </div>
+        <div>
+            {{ form_widget(form.save, { 'attr': {'class': 'btn btn-default'} }) }}
+        </div>
+    {{ form_end(form) }}
+{% endblock %}
