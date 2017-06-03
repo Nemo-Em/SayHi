@@ -36,7 +36,7 @@ class UserController extends Controller
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($user);
                 $em->flush();
-                $this->addFlashbag($req, 'success', 'user added!');
+                $this->validateDbInsert($user, $req);
                 return new RedirectResponse($this->generateUrl('show', array('id' => $user->getId())));
             }
             else{
@@ -78,7 +78,7 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
                 $this->addFlashbag($req, 'info', 'details changed!');
-                return $this->render('SayHiBundle:User:modify.html.twig', array('form' => $form->createView()));
+                return new RedirectResponse($this->generateUrl('modify', array('id'=>$id)));
             }
        }
     }
@@ -127,11 +127,18 @@ class UserController extends Controller
     /**
      * @Route("/", name = "showAll")
      */
-    public function showAllAction()
+    public function showAllAction(Request $req)
     {
-        $repo = $this->getDoctrine()->getRepository('SayHiBundle:User');
-        $allUsers = $repo->findAll();
-        return $this->render('SayHiBundle:User:show_all.html.twig', array('allUsers' => $allUsers));
+        $fetchedUsers = [];
+        if($req->isMethod('GET')){
+            $repo = $this->getDoctrine()->getRepository('SayHiBundle:User');
+            $fetchedUsers = $repo->findAll();
+            if (!empty($req->query->get('userSearch'))){
+                $toFind = $req->query->get('userSearch');
+                $fetchedUsers = $repo->showAllLike($toFind);
+            }
+        }
+        return $this->render('SayHiBundle:User:show_all.html.twig', array('fetchedUsers' => $fetchedUsers));
     }
     
     public function createUserForm(){
@@ -166,7 +173,7 @@ class UserController extends Controller
         $user = $this -> findUserById($userId);
         $address -> addUser($user);
         $form = $this->createFormBuilder($address)
-        ->setAction($this->generateUrl('new'))
+        ->setAction("/$userId/addAddress")
         ->setMethod('POST')
         ->add('city', 'text')
         ->add('street', 'text')
@@ -183,7 +190,7 @@ class UserController extends Controller
         $user = $this -> findUserById($userId);
         $email -> setUser($user);
         $form = $this->createFormBuilder($email)
-        ->setAction($this->generateUrl('new'))
+        ->setAction("/$userId/addEmail")
         ->setMethod('POST')
         ->add('emailAddress', 'text')
         ->add('contactType', 'entity', array(
@@ -196,12 +203,12 @@ class UserController extends Controller
         return $form;
     }
 
-public function addPhoneForm($userId){
+    public function addPhoneForm($userId){
         $phone = new Phone();
         $user = $this -> findUserById($userId);
         $phone -> setUser($user);
         $form = $this->createFormBuilder($phone)
-        ->setAction($this->generateUrl('new'))
+        ->setAction("/$userId/addPhone")
         ->setMethod('POST')
         ->add('number', 'text')
         ->add('contactType', 'entity', array(
@@ -228,7 +235,15 @@ public function addPhoneForm($userId){
         $req->getSession()
         ->getFlashBag()
         ->add($type, $message);
-
+    }
+    
+    public function validateDbInsert($object, Request $req){
+        if(null != $object->getId()) {
+            $this->addFlashbag($req, 'success', 'request success!');
+        }
+        else{
+            $this->addFlashbag($req, 'danger', 'request failed');
+        }
     }
     
     public function findUserById($id){

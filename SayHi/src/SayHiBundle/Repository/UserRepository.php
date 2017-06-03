@@ -12,4 +12,10 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    public function showAllLike($name){
+        $query =$this->getEntityManager()->createQuery(''
+                . 'SELECT u FROM SayHiBundle:User u WHERE u.name LIKE :name')
+                ->setParameter('name', '%'.$name.'%');
+        return $query->getResult();
+    }
 }

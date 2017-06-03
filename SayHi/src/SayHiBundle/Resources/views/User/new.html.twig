@@ -1,8 +1,9 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}SayHiBundle:User:new{% endblock %}
+{% block title %}New User - SayHi{% endblock %}
 
 {% block body %}
+    <h1>New User</h1>
     {{ form_start(form) }}
         <div>
             {{ form_label(form.name) }}<br>
